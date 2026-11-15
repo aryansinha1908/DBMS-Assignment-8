@@ -76,30 +76,30 @@ at 14:30.
 
 | # | Question | Result on the sample data |
 |---|---|---|
-| 1a | Customers with a package on truck 1721 at the crash | ElectroWorld Online, Kumar Exports, StyleKart Fashion, Vikram Joshi |
-| 1b | Recipients with a package on truck 1721 at the crash | Delhi Crafts Bazaar, Kavita Desai, Meera Iyer, Rohan Gupta |
-| 1c | Last successful delivery by truck 1721 before the crash | PD100120, delivered 12:40 to Sanjay Verma |
-| 2 | Customer who shipped the most packages in the past year | Sharma Legal Associates (5 packages) |
-| 3 | Customer who spent the most on shipping in the past year | Kumar Exports (₹12,502) |
+| 1a | Customers with a package on truck 1721 at the crash | Aryan Sinha, Kumar Exports, StyleKart Fashion |
+| 1b | Recipients with a package on truck 1721 at the crash | Delhi Crafts Bazaar, Meera Iyer, Sachin Paliwal |
+| 1c | Last successful delivery by truck 1721 before the crash | PD100113, delivered 12:40 to Sanjay Verma |
+| 2 | Customer who shipped the most packages in the past year | Aryan Sinha (4 packages) |
+| 3 | Customer who spent the most on shipping in the past year | Aryan Sinha (₹4,050) |
 | 4 | Street with the most customers | Linking Road, Mumbai (3 customers) |
-| 5 | Packages not delivered within the promised time | 8: four delivered late, four lost on truck 1721 |
-| 6a | Simple bill: customer, address, amount owed | 6 bills for October 2026 |
-| 6b | Bill by type of service | the same 6 bills, with a TOTAL line per customer |
-| 6c | Itemized bill, one line per shipment | the same 6 bills, with a TOTAL line per customer |
-| 7 | Tracking history of package PD100120 | 5 events |
-| 8 | Where every undelivered package is now | 7 packages |
+| 5 | Packages not delivered within the promised time | 5: two delivered late, three lost on truck 1721 |
+| 6a | Simple bill: customer, address, amount owed | 5 bills for October 2026 |
+| 6b | Bill by type of service | the same 5 bills, with a TOTAL line per customer |
+| 6c | Itemized bill, one line per shipment | the same 5 bills, with a TOTAL line per customer |
+| 7 | Tracking history of package PD100111 | 5 events |
+| 8 | Where every undelivered package is now | 4 packages |
 
 
 ## Sample data
 
 | Table | Rows |
 |---|---:|
-| customer | 14 (6 contract, 8 occasional) |
+| customer | 8 (5 contract, 3 occasional) |
 | service_type | 6 |
-| location | 14 (4 warehouses, 4 planes, 6 trucks) |
-| package | 32 (3 international, 2 hazardous, 2 prepaid returns) |
+| location | 12 (4 warehouses, 4 planes, 4 trucks) |
+| package | 18 (3 international, 1 hazardous, 1 prepaid return) |
 | customs_declaration | 3 |
-| tracking_event | 166 |
+| tracking_event | 90 |
 
 The company, customers and addresses are fictional. E-mail addresses use reserved example
 domains.

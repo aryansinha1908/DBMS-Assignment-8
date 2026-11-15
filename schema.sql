@@ -1,17 +1,11 @@
 -- =====================================================================
---  Package Delivery Database - schema.sql
---  Creates the database, its 6 tables, keys, constraints and indexes.
---  Requires MySQL 8.0.16 or later.
---  Run order: schema.sql -> data.sql -> queries.sql
+--  Package Delivery Database
 -- =====================================================================
 
 DROP DATABASE IF EXISTS package_delivery_db;
 CREATE DATABASE package_delivery_db;
 USE package_delivery_db;
 
--- Customers who send packages.
---   Contract   customers have an account number and are billed monthly.
---   Occasional customers have no account and pay by credit card.
 CREATE TABLE customer (
     customer_id    INT           PRIMARY KEY,
     name           VARCHAR(80)   NOT NULL,
@@ -29,8 +23,6 @@ CREATE TABLE customer (
     CHECK (pincode REGEXP '^[1-9][0-9]{5}$')
 );
 
--- Kinds of service: depends on package type, weight limit and speed.
--- Charge for a package = base_rate + rate_per_kg * weight (+ hazardous surcharge)
 CREATE TABLE service_type (
     service_id     INT           PRIMARY KEY,
     service_name   VARCHAR(40)   NOT NULL UNIQUE,
@@ -45,7 +37,6 @@ CREATE TABLE service_type (
     CHECK (base_rate >= 0 AND rate_per_kg >= 0)
 );
 
--- Places a package can be: warehouses, trucks and planes
 CREATE TABLE location (
     location_id    INT           PRIMARY KEY,
     location_type  ENUM('Warehouse', 'Truck', 'Plane') NOT NULL,
@@ -53,10 +44,6 @@ CREATE TABLE location (
     city           VARCHAR(40)
 );
 
--- One row per package.
---   shipper = customer who sends it; payer = customer who is billed for it.
---   Prepaid shipments (e.g. returns) are paid by another customer's account.
---   The recipient need not be a customer, so the delivery address is kept here.
 CREATE TABLE package (
     tracking_no       CHAR(8)       PRIMARY KEY,
     shipper_id        INT           NOT NULL,
@@ -86,7 +73,6 @@ CREATE TABLE package (
          OR (payment_type = 'Prepaid'     AND card_last4 IS NULL     AND payer_id <> shipper_id) )
 );
 
--- Customs declaration for an international package (contents and their value)
 CREATE TABLE customs_declaration (
     tracking_no     CHAR(8)        PRIMARY KEY,
     contents        VARCHAR(100)   NOT NULL,
@@ -95,8 +81,6 @@ CREATE TABLE customs_declaration (
     CHECK (declared_value > 0)
 );
 
--- Tracking history: every scan of a package.  After an event the package is
--- at location_id, until its next event.  'Delivered' ends the history.
 CREATE TABLE tracking_event (
     tracking_no   CHAR(8)   NOT NULL,
     event_time    DATETIME  NOT NULL,
@@ -111,10 +95,8 @@ CREATE TABLE tracking_event (
          OR (event_type <> 'Delivered' AND signed_by IS NULL) )
 );
 
--- Indexes for the frequent queries
--- (MySQL already indexes every primary key, UNIQUE column and foreign key)
-CREATE INDEX idx_event_location_time ON tracking_event (location_id, event_time); -- what was on a truck / in a warehouse at a time
-CREATE INDEX idx_event_type          ON tracking_event (event_type, event_time);  -- deliveries
-CREATE INDEX idx_package_payer_time  ON package (payer_id, ship_time);            -- monthly bills, top spender
-CREATE INDEX idx_package_ship_time   ON package (shipper_id, ship_time);          -- top shipper in the past year
-CREATE INDEX idx_customer_street     ON customer (street, city);                  -- street with most customers
+CREATE INDEX idx_event_location_time ON tracking_event (location_id, event_time);
+CREATE INDEX idx_event_type          ON tracking_event (event_type, event_time);
+CREATE INDEX idx_package_payer_time  ON package (payer_id, ship_time);
+CREATE INDEX idx_package_ship_time   ON package (shipper_id, ship_time);
+CREATE INDEX idx_customer_street     ON customer (street, city);
